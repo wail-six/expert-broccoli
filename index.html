@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>تطبيق المكافآت الكامل</title>
+<style>
+body { font-family: Arial, sans-serif; background-color: #E0F7FA; color: #006064; text-align: center; }
+button { padding: 10px 20px; margin: 10px; font-size: 16px; }
+#funfact { margin-top: 20px; font-size: 18px; }
+#coins { font-size: 20px; margin-top: 10px; }
+.task { margin: 15px; }
+#shop button { display:block; margin:10px auto; }
+</style>
+</head>
+<body>
+<h1>مرحبا! 🌟</h1>
+<div id="coins">عملات: 0 💰</div>
+<h2>مهام اليوم</h2>
+<div class="task">
+<button onclick="startTask(15)">قم بمهمة 15 دقيقة</button>
+<p id="timer">00:00</p>
+</div>
+<div class="task">
+<button onclick="startTask(5)">قم بمهمة 5 دقائق</button>
+<p id="timer2">00:00</p>
+</div>
+
+<h2>المتجر</h2>
+<div id="shop">
+<button onclick="buyItem('sticker1',5)">شراء ملصق 1 - 5 عملات</button>
+<button onclick="buyItem('sticker2',10)">شراء ملصق 2 - 10 عملات</button>
+</div>
+
+<p id="funfact">جديدك سيظهر هنا</p>
+<button onclick="loadFunfact()">فعل حقيقة ممتعة</button>
+
+<h2>تقرير اليوم</h2>
+<div id="report">لم يتم إكمال أي مهمة بعد</div>
+
+<script>
+let coins = 0;
+let timerInterval, timerInterval2;
+
+// Tasks timers
+function startTask(minutes){
+    clearInterval(timerInterval);
+    let seconds = minutes*60;
+    document.getElementById('timer').innerHTML = seconds + " ثانية متبقية";
+    timerInterval = setInterval(()=>{
+        seconds--;
+        document.getElementById('timer').innerHTML = seconds + " ثانية متبقية";
+        if(seconds<=0){
+            clearInterval(timerInterval);
+            alert("🎉 أحسنت! المهمة اكتملت");
+            coins += 5;
+            document.getElementById('coins').innerHTML = "عملات: "+coins+" 💰";
+            updateReport('✅ المهمة 15 دقيقة');
+        }
+    },1000);
+}
+
+function startTask2(minutes){
+    clearInterval(timerInterval2);
+    let seconds = minutes*60;
+    document.getElementById('timer2').innerHTML = seconds + " ثانية متبقية";
+    timerInterval2 = setInterval(()=>{
+        seconds--;
+        document.getElementById('timer2').innerHTML = seconds + " ثانية متبقية";
+        if(seconds<=0){
+            clearInterval(timerInterval2);
+            alert("🎉 أحسنت! المهمة اكتملت");
+            coins += 2;
+            document.getElementById('coins').innerHTML = "عملات: "+coins+" 💰";
+            updateReport('✅ المهمة 5 دقائق');
+        }
+    },1000);
+}
+
+// Shop function
+function buyItem(item,cost){
+    if(coins>=cost){
+        coins -= cost;
+        alert("🎁 اشتريت "+item);
+        document.getElementById('coins').innerHTML = "عملات: "+coins+" 💰";
+    } else {
+        alert("❌ ليس لديك ما يكفي من العملات");
+    }
+}
+
+// Report function
+let reportList = [];
+function updateReport(task){
+    reportList.push(task);
+    document.getElementById('report').innerHTML = reportList.join("<br>");
+}
+
+// Safe funfacts
+const safeFacts = [
+    "🦁 هل تعلم؟ صوت الأسد يسمع من مسافة 8 كيلومترات!",
+    "🪐 كوكب زحل يطفو فوق الماء!",
+    "🐬 الدلافين تنام نصف دماغها فقط!",
+    "🦋 الفراشة تشرب من أقدامها!",
+    "🐢 السلحفاة تعيش أكثر من 100 سنة!",
+    "🌕 القمر يبعد عنا 384 ألف كيلومتر!",
+    "🐱 القطط لا تستطيع تذوق السكر.",
+    "🐘 الفيل يبكي عندما يحزن!",
+    "🌈 القوس قزح لا يظهر إلا عندما تكون الشمس خلفك.",
+    "🐦 الطائر الطنان يرفرف جناحيه 80 مرة في الثانية!"
+];
+
+function loadFunfact(){
+    let fact = safeFacts[Math.floor(Math.random()*safeFacts.length)];
+    document.getElementById("funfact").innerHTML = fact;
+}
+</script>
+</body>
+</html>
